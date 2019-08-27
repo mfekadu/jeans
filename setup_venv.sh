@@ -1,0 +1,21 @@
+#!/bin/bash
+python3 -m venv venv
+
+echo "Then run the following in your shell:"
+echo "\`\`\`"
+echo ". venv/bin/activate"
+echo "\`\`\`"
+echo "OR the following as both run the activate thing within your current shell."
+echo "\`\`\`"
+echo "source venv/bin/activate"
+echo "\`\`\`"
+echo "*******************************"
+echo "(Optional) To exit the venv shell type"
+echo "\`\`\`"
+echo "deactivate"
+echo "\`\`\`"
+echo "*******************************"
+echo "Finally run the following"
+echo "\`\`\`"
+echo "pip install -r requirements.txt"
+echo "\`\`\`"
