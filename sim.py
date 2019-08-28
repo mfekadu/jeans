@@ -20,8 +20,23 @@ def run():
     '''
     pyglet.app.run()
 
+def update(dt):
+    pass
+
+def schedule(fun):
+    '''
+    given a function name
+    tell pyglet to call that function every 1/60 seconds
+    '''
+    pyglet.clock.schedule_interval(fun, 1.0/60)
+
+
 def main():
     window = setup_window()
+    
+    # do the update on 1/60th clock-ticks
+    schedule(update)
+
     #options = DrawOptions()
 
     # setup a Space for pymunk to do the fancy physics
