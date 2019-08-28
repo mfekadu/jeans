@@ -4,7 +4,6 @@ import pyglet # for displaying to screen
 import pymunk # for rigid body physics
 from pymunk.pyglet_util import DrawOptions # pymunk/pyglet interaction
 
-
 def get_pymunk_space():
     '''returns a `space` where the physics happens'''
     space = pymunk.Space()
@@ -41,13 +40,21 @@ def get_pymunk_rigid_poly():
     ALSO returns a Poly which is the Shape that really gets drawn
     '''
     mass = 1
-    moment_of_inertia = 1666
     body_type = pymunk.Body.DYNAMIC
+
+    poly_size = (150, 150)
+    poly = pymunk.Poly.create_box(body=None, size=poly_size)
+    # moment depends on mass and size. 
+    # bigger poly >> bigger moment. 
+    # more massive >> bigger moment
+    moment_of_inertia = pymunk.moment_for_poly(mass, poly.get_vertices())
+
     body = pymunk.Body(mass, moment_of_inertia, body_type)
     x = 500
     y = 500
     body.position = (x, y)
-    poly = pymunk.Poly.create_box(body)
+
+    poly.body = body
     return body, poly
 
 @window.event
