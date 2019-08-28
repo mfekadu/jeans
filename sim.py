@@ -11,10 +11,13 @@ def main():
     DISPLAY = pygame.display.set_mode((GW, GH))
     CLOCK = pygame.time.Clock()
 
-    # while the game is running
-    while True:
-        print(1)
-    #pygame.quit()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+    pygame.quit()
     #quit()
 
 if __name__ == "__main__":
