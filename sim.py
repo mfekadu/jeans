@@ -42,7 +42,8 @@ def get_pymunk_rigid_body():
     '''
     mass = 1
     moment_of_inertia = 1666
-    body = pymunk.Body(mass, moment_of_inertia)
+    body_type = pymunk.Body.DYNAMIC
+    body = pymunk.Body(mass, moment_of_inertia, body_type)
     x = 500
     y = 500
     body.position = (x, y)
