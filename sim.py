@@ -2,7 +2,7 @@
 
 import pyglet # for displaying to screen
 import pymunk # for rigid body physics
-from pymunk.pyglet_util import DrawOptions # idk what this is
+from pymunk.pyglet_util import DrawOptions # pymunk/pyglet interaction
 
 # game width and height
 GW = 800
@@ -36,6 +36,7 @@ def get_pymunk_rigid_body():
     '''
     returns a `rigid body` which is a shapeless object that 
     has physical properties (mass, position, rotation, velocity, etc)
+    ALSO returns a Poly which is the Shape that really gets drawn
     '''
     mass = 1
     moment_of_inertia = 1666
@@ -43,7 +44,8 @@ def get_pymunk_rigid_body():
     x = 50
     y = 100
     body.position = (x, y)
-    return body
+    poly = pymunk.Poly.create_box(body)
+    return body, poly
 
 @window.event
 def on_draw():
@@ -58,10 +60,9 @@ def main():
 
     space = get_pymunk_space()
 
-    body = get_pymunk_rigid_body()
-
-    # OOP better than FP here bc space is big to pass aroudn
-    space.add(body)
+    body, poly = get_pymunk_rigid_body()
+ 
+    space.add(body, poly)
 
     # do the update on 1/60th clock-ticks
     update = lambda dt: space.step(dt)
