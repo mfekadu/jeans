@@ -1,1 +1,4 @@
+cffi==1.12.3
 numpy==1.17.1
+pycparser==2.19
+pymunk==5.5.0
