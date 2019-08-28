@@ -12,7 +12,7 @@ def setup_window():
     '''
     setup the pyglet window
     '''
-    return pyglet.window.Window(GW, GH, __file__, resizable=True)
+    return pyglet.window.Window(GW, GH, __file__, resizable=False)
 
 def run():
     '''
