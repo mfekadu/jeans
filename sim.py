@@ -17,9 +17,6 @@ def run():
     '''
     pyglet.app.run()
 
-def update(dt):
-    pass
-
 def schedule(fun):
     '''
     given a function name
@@ -67,6 +64,7 @@ def main():
     space.add(body)
 
     # do the update on 1/60th clock-ticks
+    update = lambda dt: space.step(dt)
     schedule(update)
 
     #options = DrawOptions()
