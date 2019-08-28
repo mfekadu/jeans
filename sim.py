@@ -8,8 +8,20 @@ from pymunk.pyglet_util import DrawOptions # pymunk/pyglet interaction
 GW = 800
 GH = 800
 
+
+
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
+
+def get_pymunk_space():
+    '''returns a `space` where the physics happens'''
+    space = pymunk.Space()
+    # gravity is represented by a tuple 
+    # 0 acceleration in x-axis and -9.8 in y-axis
+    space.gravity = (0,-9.8)
+    return space
+
+space = get_pymunk_space()
 
 def run():
     '''
@@ -23,14 +35,6 @@ def schedule(fun):
     tell pyglet to call that function every 1/60 seconds
     '''
     pyglet.clock.schedule_interval(fun, 1.0/60)
-
-def get_pymunk_space():
-    '''returns a `space` where the physics happens'''
-    space = pymunk.Space()
-    # gravity is represented by a tuple 
-    # 0 acceleration in x-axis and -9.8 in y-axis
-    space.gravity = (0,-9.8)
-    return space
 
 def get_pymunk_rigid_body():
     '''
@@ -55,10 +59,9 @@ def on_draw():
     window.clear() # start with a clean window
 
 def main():
-    # for no good reason make sure the window is setup
+    # make sure window and space are a thing
     assert window
-
-    space = get_pymunk_space()
+    assert space
 
     body, poly = get_pymunk_rigid_body()
  
