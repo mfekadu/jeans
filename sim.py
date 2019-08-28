@@ -4,14 +4,6 @@ import pyglet # for displaying to screen
 import pymunk # for rigid body physics
 from pymunk.pyglet_util import DrawOptions # pymunk/pyglet interaction
 
-# game width and height
-GW = 800
-GH = 800
-
-
-
-# must be global because the @decorators work that way
-window = pyglet.window.Window(GW, GH, __file__, resizable=False)
 
 def get_pymunk_space():
     '''returns a `space` where the physics happens'''
@@ -21,7 +13,13 @@ def get_pymunk_space():
     space.gravity = (0,-9.8)
     return space
 
+# game width and height
+GW = 800
+GH = 800
+# must be global because the @decorators work that way
+window = pyglet.window.Window(GW, GH, __file__, resizable=False)
 space = get_pymunk_space()
+options = DrawOptions() 
 
 def run():
     '''
@@ -45,8 +43,8 @@ def get_pymunk_rigid_body():
     mass = 1
     moment_of_inertia = 1666
     body = pymunk.Body(mass, moment_of_inertia)
-    x = 50
-    y = 100
+    x = 500
+    y = 500
     body.position = (x, y)
     poly = pymunk.Poly.create_box(body)
     return body, poly
@@ -57,6 +55,7 @@ def on_draw():
     stuff that happens when pyglet is drawing
     '''
     window.clear() # start with a clean window
+    space.debug_draw(options)
 
 def main():
     # make sure window and space are a thing
