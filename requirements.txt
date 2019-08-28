@@ -1,4 +1,6 @@
 cffi==1.12.3
+future==0.17.1
 numpy==1.17.1
 pycparser==2.19
+pyglet==1.4.2
 pymunk==5.5.0
