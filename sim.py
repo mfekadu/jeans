@@ -33,6 +33,18 @@ def schedule(fun):
     '''
     pyglet.clock.schedule_interval(fun, 1.0/60)
 
+
+def get_pymunk_rigid_circle():
+    mass = 1
+    radius = 70
+    circle_moment = pymunk.moment_for_circle(mass=mass, 
+                                             inner_radius=0, 
+                                             outer_radius=radius)
+    circle_body = pymunk.Body(mass=mass, moment=circle_moment)
+    circle_shape = pymunk.Circle(body=circle_body, radius=radius)
+    circle_body.position = (400,400)
+    return circle_body, circle_shape
+
 def get_pymunk_rigid_poly():
     '''
     returns a `rigid body` which is a shapeless object that 
@@ -73,6 +85,9 @@ def main():
     body, poly = get_pymunk_rigid_poly()
  
     space.add(body, poly)
+
+    cbody, cshape = get_pymunk_rigid_circle()
+    space.add(cbody, cshape)
 
     # do the update on 1/60th clock-ticks
     update = lambda dt: space.step(dt)
