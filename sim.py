@@ -70,14 +70,6 @@ def main():
     update = lambda dt: space.step(dt)
     schedule(update)
 
-    #options = DrawOptions()
-
-    # setup a Space for pymunk to do the fancy physics
-    #space = pymunk.Space()
-    #space.gravity = (0,-9.8)
-
-    #body = pymunk.Body(1, 1666)
-
     run()
 
 if __name__ == "__main__":
