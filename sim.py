@@ -34,7 +34,7 @@ def schedule(fun):
     '''
     pyglet.clock.schedule_interval(fun, 1.0/60)
 
-def get_pymunk_rigid_body():
+def get_pymunk_rigid_poly():
     '''
     returns a `rigid body` which is a shapeless object that 
     has physical properties (mass, position, rotation, velocity, etc)
@@ -63,7 +63,7 @@ def main():
     assert window
     assert space
 
-    body, poly = get_pymunk_rigid_body()
+    body, poly = get_pymunk_rigid_poly()
  
     space.add(body, poly)
 
