@@ -10,7 +10,7 @@ def get_pymunk_space():
     space = pymunk.Space()
     # gravity is represented by a tuple 
     # 0 acceleration in x-axis and -9.8 in y-axis
-    space.gravity = (0,-9.8)
+    space.gravity = (0,-90.8)
     return space
 
 # game width and height
