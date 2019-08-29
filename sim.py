@@ -38,16 +38,27 @@ def schedule(fun):
     pyglet.clock.schedule_interval(fun, 1.0/60)
 
 
+def get_pentagon():
+    mass=1
+    # vertices are defined counter-clockwise from bottom-left (origin)
+    penta_vertices = ((0,0), (100,0), (150,100), (50,200), (-50, 100))
+    penta_shape = pymunk.Poly(body=None, vertices=penta_vertices)
+    penta_vertices = penta_shape.get_vertices()
+    penta_moment = pymunk.moment_for_poly(mass=mass, vertices=penta_vertices)
+    penta_body = pymunk.Body(mass=mass, moment=penta_moment)
+    penta_body.position = (700, 800)
+    penta_shape.body=penta_body
+    return penta_body, penta_shape
+
+
 def get_triangle():
     '''
     return a triangle
     '''
     mass = 1
     triangle_vertices = ((0,0), (100,0), (50,100)) # equilateral
-    print("tv", triangle_vertices)
     triangle_shape = pymunk.Poly(body=None, vertices=triangle_vertices)
     triangle_vertices = triangle_shape.get_vertices() # because Vec2d
-    print("tv", triangle_vertices)
     triangle_moment = pymunk.moment_for_poly(mass=mass,
                                             vertices=triangle_vertices)
     triangle_body = pymunk.Body(mass=mass, moment=triangle_moment)
@@ -139,6 +150,9 @@ def main():
 
     tbody, tshape = get_triangle()
     space.add(tbody, tshape)
+
+    pb, ps = get_pentagon()
+    space.add(pb, ps)
 
     # do the update on 1/60th clock-ticks
     def update(dt): return space.step(dt)
