@@ -38,6 +38,23 @@ def schedule(fun):
     pyglet.clock.schedule_interval(fun, 1.0/60)
 
 
+def get_triangle():
+    '''
+    return a triangle
+    '''
+    mass = 1
+    triangle_vertices = ((0,0), (100,0), (50,100)) # equilateral
+    print("tv", triangle_vertices)
+    triangle_shape = pymunk.Poly(body=None, vertices=triangle_vertices)
+    triangle_vertices = triangle_shape.get_vertices() # because Vec2d
+    print("tv", triangle_vertices)
+    triangle_moment = pymunk.moment_for_poly(mass=mass,
+                                            vertices=triangle_vertices)
+    triangle_body = pymunk.Body(mass=mass, moment=triangle_moment)
+    triangle_body.position = (550,700)
+    triangle_shape.body = triangle_body # set here because init None above
+    return triangle_body, triangle_shape
+
 def get_segment():
     '''
     return a line segment
@@ -119,6 +136,9 @@ def main():
 
     line_body, line_shape = get_segment()
     space.add(line_body, line_shape)
+
+    tbody, tshape = get_triangle()
+    space.add(tbody, tshape)
 
     # do the update on 1/60th clock-ticks
     def update(dt): return space.step(dt)
