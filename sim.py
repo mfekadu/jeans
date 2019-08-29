@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 
-import pyglet # for displaying to screen
-import pymunk # for rigid body physics
-from pymunk.pyglet_util import DrawOptions # pymunk/pyglet interaction
+import pyglet  # for displaying to screen
+import pymunk  # for rigid body physics
+from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
+
 
 def get_pymunk_space():
     '''returns a `space` where the physics happens'''
     space = pymunk.Space()
-    # gravity is represented by a tuple 
+    # gravity is represented by a tuple
     # 0 acceleration in x-axis and -9.8 in y-axis
-    space.gravity = (0,-90.8)
+    space.gravity = (0, -90.8)
     return space
+
 
 # game width and height
 GW = 800
@@ -18,13 +20,15 @@ GH = 800
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
 space = get_pymunk_space()
-options = DrawOptions() 
+options = DrawOptions()
+
 
 def run():
     '''
     run the main loop for the game engine
     '''
     pyglet.app.run()
+
 
 def schedule(fun):
     '''
@@ -34,20 +38,41 @@ def schedule(fun):
     pyglet.clock.schedule_interval(fun, 1.0/60)
 
 
+def get_segment():
+    '''
+    return a line segment
+    '''
+    point_1 = (0, 0)
+    point_2 = (0, 400)
+    mass = 1
+    thiccness = 2
+    seg_mom = pymunk.moment_for_segment(mass=mass,
+                                        a=point_1,
+                                        b=point_2,
+                                        radius=thiccness)
+    seg_body = pymunk.Body(mass=mass, moment=seg_mom)
+    seg_shape = pymunk.Segment(body=seg_body,
+                               a=point_1,
+                               b=point_2,
+                               radius=thiccness)
+    seg_body.position = (400, 100)
+
+
 def get_pymunk_rigid_circle():
     mass = 1
     radius = 70
-    circle_moment = pymunk.moment_for_circle(mass=mass, 
-                                             inner_radius=0, 
+    circle_moment = pymunk.moment_for_circle(mass=mass,
+                                             inner_radius=0,
                                              outer_radius=radius)
     circle_body = pymunk.Body(mass=mass, moment=circle_moment)
     circle_shape = pymunk.Circle(body=circle_body, radius=radius)
-    circle_body.position = (400,400)
+    circle_body.position = (400, 400)
     return circle_body, circle_shape
+
 
 def get_pymunk_rigid_poly():
     '''
-    returns a `rigid body` which is a shapeless object that 
+    returns a `rigid body` which is a shapeless object that
     has physical properties (mass, position, rotation, velocity, etc)
     ALSO returns a Poly which is the Shape that really gets drawn
     '''
@@ -56,8 +81,8 @@ def get_pymunk_rigid_poly():
 
     poly_size = (150, 150)
     poly = pymunk.Poly.create_box(body=None, size=poly_size)
-    # moment depends on mass and size. 
-    # bigger poly >> bigger moment. 
+    # moment depends on mass and size.
+    # bigger poly >> bigger moment.
     # more massive >> bigger moment
     moment_of_inertia = pymunk.moment_for_poly(mass, poly.get_vertices())
 
@@ -69,13 +94,15 @@ def get_pymunk_rigid_poly():
     poly.body = body
     return body, poly
 
+
 @window.event
 def on_draw():
     '''
     stuff that happens when pyglet is drawing
     '''
-    window.clear() # start with a clean window
+    window.clear()  # start with a clean window
     space.debug_draw(options)
+
 
 def main():
     # make sure window and space are a thing
@@ -83,17 +110,18 @@ def main():
     assert space
 
     body, poly = get_pymunk_rigid_poly()
- 
+
     space.add(body, poly)
 
     cbody, cshape = get_pymunk_rigid_circle()
     space.add(cbody, cshape)
 
     # do the update on 1/60th clock-ticks
-    update = lambda dt: space.step(dt)
+    def update(dt): return space.step(dt)
     schedule(update)
 
     run()
+
 
 if __name__ == "__main__":
     print("hello world")
