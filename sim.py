@@ -56,6 +56,7 @@ def get_segment():
                                b=point_2,
                                radius=thiccness)
     seg_body.position = (400, 100)
+    return seg_body, seg_shape
 
 
 def get_pymunk_rigid_circle():
@@ -115,6 +116,9 @@ def main():
 
     cbody, cshape = get_pymunk_rigid_circle()
     space.add(cbody, cshape)
+
+    line_body, line_shape = get_segment()
+    space.add(line_body, line_shape)
 
     # do the update on 1/60th clock-ticks
     def update(dt): return space.step(dt)
