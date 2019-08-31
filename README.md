@@ -6,7 +6,7 @@ The goal of this repository is to better understand this weird concept known as 
 ## Inspirational Readings
 * [Sapiens][1] by Yuval Noah Harari - particularly chapter 2
 * [The Righteous Mind][2] by Jonathan Haidt - particularly [chapter 9][3] and [this lecture][4]
-* [Up and Down the Ladder of Abstraction][3] by Bret Victor
+* [Up and Down the Ladder of Abstraction][6] by Bret Victor
 
 ## Tools
 * Pymunk - physics engine
@@ -38,3 +38,4 @@ python3 sim.py
 [3]: https://www.righteousmind.com/wp-content/uploads/2012/08/RighteousMind.Chapter-9.pdf
 [4]: https://youtu.be/NQ192d4c4S0
 [5]: https://en.wikipedia.org/wiki/The_Matrix
+[6]: http://worrydream.com/LadderOfAbstraction/
