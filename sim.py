@@ -39,15 +39,15 @@ def schedule(fun):
 
 
 def get_pentagon():
-    mass=1
+    mass = 1
     # vertices are defined counter-clockwise from bottom-left (origin)
-    penta_vertices = ((0,0), (100,0), (150,100), (50,200), (-50, 100))
+    penta_vertices = ((0, 0), (100, 0), (150, 100), (50, 200), (-50,  100))
     penta_shape = pymunk.Poly(body=None, vertices=penta_vertices)
     penta_vertices = penta_shape.get_vertices()
     penta_moment = pymunk.moment_for_poly(mass=mass, vertices=penta_vertices)
     penta_body = pymunk.Body(mass=mass, moment=penta_moment)
     penta_body.position = (700, 800)
-    penta_shape.body=penta_body
+    penta_shape.body = penta_body
     return penta_body, penta_shape
 
 
@@ -56,15 +56,16 @@ def get_triangle():
     return a triangle
     '''
     mass = 1
-    triangle_vertices = ((0,0), (100,0), (50,100)) # equilateral
+    triangle_vertices = ((0, 0), (100, 0), (50, 100))  # equilateral
     triangle_shape = pymunk.Poly(body=None, vertices=triangle_vertices)
-    triangle_vertices = triangle_shape.get_vertices() # because Vec2d
+    triangle_vertices = triangle_shape.get_vertices()  # because Vec2d
     triangle_moment = pymunk.moment_for_poly(mass=mass,
-                                            vertices=triangle_vertices)
+                                             vertices=triangle_vertices)
     triangle_body = pymunk.Body(mass=mass, moment=triangle_moment)
-    triangle_body.position = (550,700)
-    triangle_shape.body = triangle_body # set here because init None above
+    triangle_body.position = (550, 700)
+    triangle_shape.body = triangle_body  # set here because init None above
     return triangle_body, triangle_shape
+
 
 def get_segment():
     '''
