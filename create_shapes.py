@@ -49,7 +49,11 @@ def create_segment(p1=(0, 0), p2=(0, 1), thicc=1, x=0, y=0, m=1, scalar=1,
           scalar <to augment the length>, body_type (bt)
     return (body, shape) tuple for a line segment
     '''
-    p2 = (p2[0], p2[1]*scalar)
+    given_bt = bt
+    bt = Body.DYNAMIC if given_bt == 'dynamic' else Body.DYNAMIC
+    bt = Body.STATIC if given_bt == 'static' else Body.DYNAMIC
+    bt = Body.KINEMATIC if given_bt == 'kinematic' else Body.DYNAMIC
+    p2 = (p2[0]*scalar, p2[1]*scalar)
     moment = moment_for_segment(mass=m, a=p1, b=p2, radius=thicc)
     body = Body(mass=m, moment=moment, body_type=bt)
     shape = Segment(body=body, a=p1, b=p2, radius=thicc)

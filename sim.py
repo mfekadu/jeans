@@ -5,6 +5,7 @@ import pymunk  # for rigid body physics
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 from create_shapes import create_pentagon, create_triangle, create_segment
 from create_shapes import create_circle, create_rect
+from create_world import draw_border
 
 
 def get_pymunk_space(gravity=(0, -9.807)):
@@ -21,8 +22,9 @@ GW = 800
 GH = 800
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
-space = get_pymunk_space(gravity=(0, 0))
+space = get_pymunk_space(gravity=(0, -1000))
 options = DrawOptions()
+space.add(draw_border(GW, GH))
 
 
 def run():
@@ -71,7 +73,10 @@ def main():
     space.add(pb, ps)
 
     # do the update on 1/60th clock-ticks
-    def update(dt): return space.step(dt)
+    def update(dt):
+        [print(type(shape), shape.body.position) for shape in space.shapes]
+        return space.step(dt)
+
     schedule(update)
 
     run()
