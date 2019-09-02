@@ -18,8 +18,8 @@ def get_pymunk_space(gravity=(0, -9.807)):
 
 
 # game width and height
-GW = 800
-GH = 800
+GW = 200
+GH = 900
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
 space = get_pymunk_space(gravity=(0, 0))
@@ -74,6 +74,10 @@ def main():
     # do the update on 1/60th clock-ticks
     def update(dt):
         [print(type(shape), shape.body.position) for shape in space.shapes]
+        for shape in space.shapes:
+            x, y = shape.body.position.x, shape.body.position.y
+            if (x < 0 or x > GW or y < 0 or y > GH):
+                space.remove(shape, shape.body)
         return space.step(dt)
 
     schedule(update)
