@@ -57,19 +57,23 @@ def main():
     assert space
 
     body, poly = create_rect(x=300, y=300, scalar=50)
-
+    poly.friction = 0.5
     space.add(body, poly)
 
     cbody, cshape = create_circle(r=50, x=400, y=400)
+    cshape.friction = 0.5
     space.add(cbody, cshape)
 
     line_body, line_shape = create_segment(x=600, y=600, scalar=50)
+    line_shape.friction = 0.5
     space.add(line_body, line_shape)
 
     tbody, tshape = create_triangle(x=100, y=600, scalar=50)
+    tshape.friction = 0.5
     space.add(tbody, tshape)
 
     pb, ps = create_pentagon(x=150, y=150, scalar=50)
+    ps.friction = 0.5
     space.add(pb, ps)
 
     # do the update on 1/60th clock-ticks

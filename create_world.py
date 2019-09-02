@@ -17,6 +17,12 @@ def draw_border(game_width, game_height, thicc=10):
     tbb = tbs.body
     x = tbb.position.x
     tbs.body.position = (x, game_height)
+
+    # 1.0 is the coefficient of friction for dry concrete?
+    lbs.friction = 1.0
+    bbs.friction = 1.0
+    rbs.friction = 1.0
+    tbs.friction = 1.0
     # return all border-bodies and border-shapes in a tuple, counter-clockwise
     return ((lbb, lbs), (bbb, bbs), (rbb, rbs), (tbb, tbs))
 
