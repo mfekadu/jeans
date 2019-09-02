@@ -22,7 +22,7 @@ GW = 800
 GH = 800
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
-space = get_pymunk_space(gravity=(100, -1000))
+space = get_pymunk_space(gravity=(0, 0))
 options = DrawOptions()
 space.add(draw_border(GW, GH))
 
@@ -56,40 +56,24 @@ def main():
     assert window
     assert space
 
-    body, poly = create_rect(x=300, y=300, scalar=50)
-    # poly.friction = 0.5
-    poly.elasticity = 0.98
+    body, poly = create_rect(x=350, y=300, scalar=50)
     space.add(body, poly)
 
     cbody, cshape = create_circle(r=50, x=400, y=400)
-    # cshape.friction = 0.5
-    cshape.elasticity = 0.98
     space.add(cbody, cshape)
 
     line_body, line_shape = create_segment(x=600, y=600, scalar=50)
-    # line_shape.friction = 0.5
-    line_shape.elasticity = 0.98
     space.add(line_body, line_shape)
 
     tbody, tshape = create_triangle(x=100, y=600, scalar=50)
-    # tshape.friction = 0.5
-    tshape.elasticity = 0.98
     space.add(tbody, tshape)
 
     pb, ps = create_pentagon(x=150, y=150, scalar=50)
-    # ps.friction = 0.5
-    ps.elasticity = 0.98
     space.add(pb, ps)
 
     # do the update on 1/60th clock-ticks
     def update(dt):
-        # [print(type(shape), shape.body.position) for shape in space.shapes]
-        print(dt)
-        if dt >= 0.018:
-            space.gravity = (-100, 1000)
-        else:
-            space.gravity = (100, -1000)
-        print(space.gravity)
+        [print(type(shape), shape.body.position) for shape in space.shapes]
         return space.step(dt)
 
     schedule(update)
