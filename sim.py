@@ -18,8 +18,8 @@ def get_pymunk_space(gravity=(0, -9.807)):
 
 
 # game width and height
-GW = 900
-GH = 900
+GW = 400
+GH = 400
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
 space = get_pymunk_space(gravity=(0, -100))
@@ -39,7 +39,7 @@ def schedule(fun):
     given a function name
     tell pyglet to call that function every 1/60 seconds
     '''
-    pyglet.clock.schedule_interval(fun, 1.0/24000)
+    pyglet.clock.schedule_interval(fun, 1.0/5)
 
 
 @window.event
@@ -57,28 +57,18 @@ def main():
     assert space
 
     body, poly = create_rect(x=350, y=300, scalar=50)
-    poly.friction = 0.5
-    poly.elasticity = 0.98
     space.add(body, poly)
 
     cbody, cshape = create_circle(r=50, x=400, y=400)
-    cshape.friction = 0.5
-    cshape.elasticity = 0.98
     space.add(cbody, cshape)
 
     line_body, line_shape = create_segment(x=600, y=600, scalar=50)
-    line_shape.friction = 0.5
-    line_shape.elasticity = 0.98
     space.add(line_body, line_shape)
 
     tbody, tshape = create_triangle(x=100, y=600, scalar=50)
-    tshape.friction = 0.5
-    tshape.elasticity = 0.98
     space.add(tbody, tshape)
 
     pb, ps = create_pentagon(x=150, y=150, scalar=50)
-    ps.friction = 0.5
-    ps.elasticity = 0.98
     space.add(pb, ps)
 
     # do the update on 1/60th clock-ticks

@@ -18,8 +18,6 @@ def draw_border(game_width, game_height, thicc=10):
     x = tbb.position.x
     tbs.body.position = (x, game_height)
     # return all border-bodies and border-shapes in a tuple, counter-clockwise
-    bbs.elasticity = 0.98
-    bbs.friction = 1.0
     return ((lbb, lbs), (bbb, bbs), (rbb, rbs), (tbb, tbs))
 
 
