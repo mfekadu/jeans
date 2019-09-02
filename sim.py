@@ -18,11 +18,11 @@ def get_pymunk_space(gravity=(0, -9.807)):
 
 
 # game width and height
-GW = 200
-GH = 900
+GW = 400
+GH = 400
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
-space = get_pymunk_space(gravity=(0, 0))
+space = get_pymunk_space(gravity=(0, -100))
 options = DrawOptions()
 space.add(draw_border(GW, GH))
 
@@ -39,7 +39,7 @@ def schedule(fun):
     given a function name
     tell pyglet to call that function every 1/60 seconds
     '''
-    pyglet.clock.schedule_interval(fun, 1.0/60)
+    pyglet.clock.schedule_interval(fun, 1.0/5)
 
 
 @window.event
@@ -76,7 +76,7 @@ def main():
         [print(type(shape), shape.body.position) for shape in space.shapes]
         for shape in space.shapes:
             x, y = shape.body.position.x, shape.body.position.y
-            if (x < 0 or x > GW or y < 0 or y > GH):
+            if (x < (0-10) or x > (GW+10) or y < (0-10) or y > (GH+10)):
                 space.remove(shape, shape.body)
         return space.step(dt)
 
