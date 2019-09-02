@@ -5,12 +5,12 @@ import pymunk  # for rigid body physics
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 
 
-def get_pymunk_space():
+def get_pymunk_space(gravity=(0, -9.807)):
     '''returns a `space` where the physics happens'''
     space = pymunk.Space()
     # gravity is represented by a tuple
-    # 0 acceleration in x-axis and -9.8 in y-axis
-    space.gravity = (0, -9.807)
+    # 0 acceleration in x-axis and -9.807 in y-axis
+    space.gravity = gravity
     return space
 
 
@@ -19,7 +19,7 @@ GW = 800
 GH = 800
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
-space = get_pymunk_space()
+space = get_pymunk_space(gravity=(0, 0))
 options = DrawOptions()
 
 
