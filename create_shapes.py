@@ -90,7 +90,34 @@ def create_rect(w=1, h=1, scalar=1, m=1, x=0, y=0, bt=Body.DYNAMIC):
 
 
 def test_create_rect():
-    assert True
+    b, s = create_rect()  # get body and shape
+    assert type(b) == Body
+    assert b.body_type == Body.DYNAMIC
+    assert b.mass == 1
+    assert type(b.position) != tuple
+    assert b.position == (0, 0)
+    assert b.moment == 0.16666666666666666
+    assert b.shapes
+    assert type(b.shapes) == set
+    assert b.shapes.pop()
+    assert b.shapes.pop() == s
+    assert s.area == 1.0
+    assert s.body == b
+    w, h, scalar, x, y = 2, 4, 6, 8, 10
+    b, s = create_rect(w=w, h=h, scalar=scalar, m=1, x=x, y=y, bt=Body.STATIC)
+    # Body.STATIC body_type causes infinite mass and moment
+    assert type(b) == Body
+    assert b.body_type == Body.STATIC
+    assert str(b.mass) == 'inf'
+    assert type(b.position) != tuple
+    assert b.position == (x, y)
+    assert str(b.moment) == 'inf'
+    assert b.shapes
+    assert type(b.shapes) == set
+    assert b.shapes.pop()
+    assert b.shapes.pop() == s
+    assert s.area == (w * scalar) * (h * scalar)
+    assert s.body == b
     pass
 
 
