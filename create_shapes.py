@@ -120,6 +120,7 @@ def run_tests():
     test_create_segment()
     test_create_triangle()
     test_create_pentagon()
+    print("all tests passed")
 
 
 if __name__ == "__main__":
