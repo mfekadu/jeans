@@ -30,7 +30,7 @@ BORDER_THICCNESS = 10
 
 # must be global because the @decorators work that way
 window = pyglet.window.Window(GW, GH, __file__, resizable=False)
-space = get_pymunk_space(gravity=(0, -100))
+space = get_pymunk_space(gravity=cfg.GRAVITY)
 options = DrawOptions()
 space.add(draw_border(GW, GH, thicc=BORDER_THICCNESS))
 

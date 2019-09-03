@@ -8,6 +8,8 @@ SEED = 42  # set the seed for random number generators for reproducability
 
 DEBUG = True  # optionally set to False/0 (no-debug), 1 (asserts), 2 (prints)
 
+GRAVITY = (0, 0)
+
 FOOD_COUNT = 100
 FOOD_RADIUS = 5
 FOOD_COLOR = colors.RED
