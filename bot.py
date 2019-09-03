@@ -2,14 +2,11 @@
 from create_shapes import create_circle
 from colors import *
 import cfg
-from numpy import random as np_random
+from rng import MOVES
 
-# set the seed for reproducability
-print(np_random.get_state()[1][0], "??", 42)
-np_random.seed(cfg.SEED)
-print(np_random.get_state()[1][0], "??", 42)
-# mil = 1000000
-# np.random.randint(1,5,(1000,mil))
+
+def move_0(bot_body):
+    bot_body.velocity = (0, 0)
 
 
 def move_forward(bot_body):
@@ -29,16 +26,19 @@ def move_left(bot_body):
 
 
 def move_bot(bot_body):
-    print(np_random.get_state()[1][0], "??", 42)
-    r = np_random.rand()
-    if r >= 0.7:
+    # print(np_random.get_state()[1][0], "??", 42)
+    print("move_bot", "cfg.ITERATOR", cfg.ITERATOR) if cfg.DEBUG >= 2 else None
+    r = MOVES[cfg.ITERATOR]
+    if r == 1:
         move_forward(bot_body)
-    elif r <= 0.3:
+    elif r == 2:
         move_backward(bot_body)
-    elif r > 0.5:
+    elif r == 3:
         move_right(bot_body)
-    else:
+    elif r == 4:
         move_left(bot_body)
+    else:
+        move_0(bot_body)
 
 
 def create_bot():
