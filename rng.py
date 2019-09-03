@@ -19,7 +19,8 @@ np_random.seed(cfg.SEED)
 print(np_random.get_state()[1][0], "??", 42)
 
 # array for the bot moves
-MOVES = np_random.randint(0, cfg.MOVE_OPTIONS, cfg.MAX_STEPS)
+# MOVES = np_random.randint(0, cfg.MOVE_OPTIONS, cfg.MAX_STEPS)
+MOVES = [0] * 20 + [1] * 25 + [3] * 25 + [2] * 25 + [4]*25
 
 # arrays for the food positions
 FOOD_X = np_random.randint(low=cfg.BORDER_THICCNESS, high=cfg.IGW,

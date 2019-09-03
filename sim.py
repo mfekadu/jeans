@@ -29,6 +29,52 @@ options = DrawOptions()
 space.add(draw_border(cfg.GW, cfg.GH, thicc=cfg.BORDER_THICCNESS))
 
 
+def begin_collision(arbiter, space, data):
+    s1 = arbiter.shapes[0]
+    s2 = arbiter.shapes[1]
+    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
+        types = [s1.body.type, s2.body.type]
+        if ('bot' in types):
+            print("begin_collision", arbiter.shapes, space, data)
+    return True
+
+
+def pre_collision(arbiter, space, data):
+    s1 = arbiter.shapes[0]
+    s2 = arbiter.shapes[1]
+    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
+        types = [s1.body.type, s2.body.type]
+        if ('bot' in types):
+            print("pre_collision", arbiter.shapes, space, data)
+    return True
+
+
+def post_collision(arbiter, space, data):
+    s1 = arbiter.shapes[0]
+    s2 = arbiter.shapes[1]
+    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
+        types = [s1.body.type, s2.body.type]
+        if ('bot' in types):
+            space.remove(s1.body, s1) if s1.body.type == 'food' else space.remove(s2.body, s2)
+            print("post_collision", arbiter.shapes, space, data)
+
+
+def separate_collision(arbiter, space, data):
+    s1 = arbiter.shapes[0]
+    s2 = arbiter.shapes[1]
+    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
+        types = [s1.body.type, s2.body.type]
+        if ('bot' in types):
+            print("separate_collision", arbiter.shapes, space, data)
+
+
+handler = space.add_default_collision_handler()
+handler.begin = begin_collision
+handler.pre_solve = pre_collision
+handler.post_solve = post_collision
+handler.separate = separate_collision
+
+
 def run():
     '''
     run the main loop for the game engine
@@ -51,6 +97,7 @@ def on_draw():
     '''
     window.clear()  # start with a clean window
     space.debug_draw(options)
+
 
 
 def main():
