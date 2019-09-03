@@ -8,11 +8,9 @@ from create_shapes import create_circle, create_rect
 from create_world import draw_border
 from food import create_food
 from bot import create_bot, move_bot
-from numpy import random as np_random
+from rng import FOOD_X, FOOD_Y
 import cfg
-
-# set the seed for reproducability
-np_random.seed(cfg.SEED)
+from sys import argv
 
 
 def get_pymunk_space(gravity=(0, -9.807)):
@@ -24,20 +22,11 @@ def get_pymunk_space(gravity=(0, -9.807)):
     return space
 
 
-# game width and height
-GW = 400
-GH = 400
-BORDER_THICCNESS = 10
-
 # must be global because the @decorators work that way
-window = p_window.Window(GW, GH, __file__, resizable=False)
+window = p_window.Window(cfg.GW, cfg.GH, __file__, resizable=False)
 space = get_pymunk_space(gravity=cfg.GRAVITY)
 options = DrawOptions()
-space.add(draw_border(GW, GH, thicc=BORDER_THICCNESS))
-
-# the space that food and bots can spawn
-IGW = GW - (BORDER_THICCNESS * 2)  # inner game width
-IGH = GH - (BORDER_THICCNESS * 2)  # inner game height
+space.add(draw_border(cfg.GW, cfg.GH, thicc=cfg.BORDER_THICCNESS))
 
 
 def run():
@@ -72,8 +61,8 @@ def main():
     # initialize food at random places
     for i in range(cfg.FOOD_COUNT):
         food_body, food_shape = create_food()
-        x = np_random.randint(BORDER_THICCNESS, IGW)
-        y = np_random.randint(BORDER_THICCNESS, IGH)
+        x = FOOD_X[i]
+        y = FOOD_Y[i]
         food_body.position = (x, y)
         space.add(food_body, food_shape)
 
@@ -86,15 +75,17 @@ def main():
     # do the update on 1/60th clock-ticks
     def update(dt):
         cfg.ITERATOR += 1
-        print(cfg.ITERATOR)
-        quit() if cfg.ITERATOR >= MAX_STEPS else None
-        if cfg.DEBUG > 1:
+        print(cfg.ITERATOR) if cfg.DEBUG >= 2 else None
+        quit(cfg.EXIT_SUCCESS) if cfg.ITERATOR >= cfg.MAX_STEPS else None
+        if cfg.DEBUG >= 3:
             [print(type(shape), shape.body.position) for shape in space.shapes]
         # 4 borders + 1 bot + 100 food
         # assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
         for shape in space.shapes:
             x, y = shape.body.position.x, shape.body.position.y
-            if (x < (0-10) or x > (GW+10) or y < (0-10) or y > (GH+10)):
+            x_is_outside = (x < (0-10) or x > (cfg.GW+10))
+            y_is_outside = (y < (0-10) or y > (cfg.GH+10))
+            if (x_is_outside or y_is_outside):
                 space.remove(shape, shape.body)
             else:
                 if hasattr(shape.body, 'type'):
@@ -107,6 +98,13 @@ def main():
 
 
 if __name__ == "__main__":
+    if (len(argv) >= 2 and (argv[1] == '-d' or argv[1] == '--debug')):
+        try:
+            cfg.DEBUG = int(argv[2])
+        except:
+            print(cfg.USAGE)
+            quit(cfg.EXIT_FAILURE)
     print("DEBUG LEVEL 1 - ASSERT STATEMENTS") if cfg.DEBUG else None
-    print("DEBUG LEVEL 2 - PRINT STATEMENTS") if cfg.DEBUG > 1 else None
+    print("DEBUG LEVEL 2 - PRINT STATEMENTS") if cfg.DEBUG >= 2 else None
+    print("DEBUG LEVEL 3 - LOTS OF PRINTS") if cfg.DEBUG >= 3 else None
     main()
