@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from create_shapes import create_segment
 
 

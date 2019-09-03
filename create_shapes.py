@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from pymunk import Poly, Body, Segment, Circle
 from pymunk import moment_for_poly, moment_for_segment, moment_for_circle
 
@@ -66,6 +65,10 @@ def create_circle(r=1, x=0, y=0, m=1, bt=Body.DYNAMIC):
     given radius (r), x-position (x), y-position (y), mass (m), body_type (bt)
     return the (body, shape) tuple for a circle
     '''
+    given_bt = bt
+    bt = Body.DYNAMIC if given_bt == 'dynamic' else Body.DYNAMIC
+    bt = Body.STATIC if given_bt == 'static' else Body.DYNAMIC
+    bt = Body.KINEMATIC if given_bt == 'kinematic' else Body.DYNAMIC
     moment = moment_for_circle(mass=m, inner_radius=0, outer_radius=r)
     body = Body(mass=m, moment=moment)
     shape = Circle(body=body, radius=r)

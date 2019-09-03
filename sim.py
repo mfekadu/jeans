@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-
 import pyglet  # for displaying to screen
 import pymunk  # for rigid body physics
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 from create_shapes import create_pentagon, create_triangle, create_segment
 from create_shapes import create_circle, create_rect
 from create_world import draw_border
+from food import create_food
+from colors import *
 
 
 def get_pymunk_space(gravity=(0, -9.807)):
@@ -39,7 +40,7 @@ def schedule(fun):
     given a function name
     tell pyglet to call that function every 1/60 seconds
     '''
-    pyglet.clock.schedule_interval(fun, 1.0/5)
+    pyglet.clock.schedule_interval(fun, 1.0/60)
 
 
 @window.event
@@ -56,8 +57,9 @@ def main():
     assert window
     assert space
 
-    body, poly = create_rect(x=350, y=300, scalar=50)
-    space.add(body, poly)
+    body, shape = create_rect(x=350, y=300, scalar=50)
+    shape.color = RED
+    space.add(body, shape)
 
     cbody, cshape = create_circle(r=50, x=400, y=400)
     space.add(cbody, cshape)
@@ -70,6 +72,10 @@ def main():
 
     pb, ps = create_pentagon(x=150, y=150, scalar=50)
     space.add(pb, ps)
+
+    food_body, food_shape = create_food()
+    food_body.position = (30, 30)
+    space.add(food_body, food_shape)
 
     # do the update on 1/60th clock-ticks
     def update(dt):
