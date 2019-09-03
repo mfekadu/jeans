@@ -10,19 +10,19 @@ def move_0(bot_body):
 
 
 def move_forward(bot_body):
-    bot_body.velocity = (0, 250)
+    bot_body.velocity = (0, 25)
 
 
 def move_backward(bot_body):
-    bot_body.velocity = (0, -250)
+    bot_body.velocity = (0, -25)
 
 
 def move_right(bot_body):
-    bot_body.velocity = (250, 0)
+    bot_body.velocity = (25, 0)
 
 
 def move_left(bot_body):
-    bot_body.velocity = (-250, 0)
+    bot_body.velocity = (-25, 0)
 
 
 def move_bot(bot_body):
