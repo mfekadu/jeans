@@ -17,3 +17,6 @@ FOOD_COLOR = colors.RED
 
 BOT_RADIUS = 10
 BOT_COLOR = colors.BLUE
+
+ITERATOR = 0
+MAX_STEPS = 1000000  # 1 million is the arbitrary limit

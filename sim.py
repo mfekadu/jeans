@@ -7,7 +7,7 @@ from create_shapes import create_pentagon, create_triangle, create_segment
 from create_shapes import create_circle, create_rect
 from create_world import draw_border
 from food import create_food
-from bot import create_bot, move_forward, move_backward, move_right, move_left
+from bot import create_bot, move_bot
 from numpy import random as np_random
 import cfg
 
@@ -85,14 +85,20 @@ def main():
 
     # do the update on 1/60th clock-ticks
     def update(dt):
+        cfg.ITERATOR += 1
+        print(cfg.ITERATOR)
+        quit() if cfg.ITERATOR >= MAX_STEPS else None
         if cfg.DEBUG > 1:
             [print(type(shape), shape.body.position) for shape in space.shapes]
         # 4 borders + 1 bot + 100 food
-        assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
+        # assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
         for shape in space.shapes:
             x, y = shape.body.position.x, shape.body.position.y
             if (x < (0-10) or x > (GW+10) or y < (0-10) or y > (GH+10)):
                 space.remove(shape, shape.body)
+            else:
+                if hasattr(shape.body, 'type'):
+                    move_bot(shape.body) if shape.body.type == 'bot' else None
         return space.step(dt)
 
     schedule(update)
