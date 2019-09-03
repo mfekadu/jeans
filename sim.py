@@ -8,6 +8,7 @@ from create_world import draw_border
 from food import create_food
 from bot import create_bot
 from colors import *
+import numpy as np
 
 
 def get_pymunk_space(gravity=(0, -9.807)):
@@ -57,22 +58,6 @@ def main():
     # make sure window and space are a thing
     assert window
     assert space
-
-    body, shape = create_rect(x=350, y=300, scalar=50)
-    shape.color = RED
-    space.add(body, shape)
-
-    cbody, cshape = create_circle(r=50, x=400, y=400)
-    space.add(cbody, cshape)
-
-    line_body, line_shape = create_segment(x=600, y=600, scalar=50)
-    space.add(line_body, line_shape)
-
-    tbody, tshape = create_triangle(x=100, y=600, scalar=50)
-    space.add(tbody, tshape)
-
-    pb, ps = create_pentagon(x=150, y=150, scalar=50)
-    space.add(pb, ps)
 
     food_body, food_shape = create_food()
     food_body.position = (30, 30)
