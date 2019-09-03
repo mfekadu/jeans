@@ -6,6 +6,7 @@ from create_shapes import create_pentagon, create_triangle, create_segment
 from create_shapes import create_circle, create_rect
 from create_world import draw_border
 from food import create_food
+from bot import create_bot
 from colors import *
 
 
@@ -76,6 +77,10 @@ def main():
     food_body, food_shape = create_food()
     food_body.position = (30, 30)
     space.add(food_body, food_shape)
+
+    bot_body, bot_shape = create_bot()
+    bot_body.position = (30, 70)
+    space.add(bot_body, bot_shape)
 
     # do the update on 1/60th clock-ticks
     def update(dt):

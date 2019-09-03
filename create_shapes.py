@@ -70,7 +70,7 @@ def create_circle(r=1, x=0, y=0, m=1, bt=Body.DYNAMIC):
     bt = Body.STATIC if given_bt == 'static' else Body.DYNAMIC
     bt = Body.KINEMATIC if given_bt == 'kinematic' else Body.DYNAMIC
     moment = moment_for_circle(mass=m, inner_radius=0, outer_radius=r)
-    body = Body(mass=m, moment=moment)
+    body = Body(mass=m, moment=moment, body_type=bt)
     shape = Circle(body=body, radius=r)
     body.position = (x, y)
     return body, shape
