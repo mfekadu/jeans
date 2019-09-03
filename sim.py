@@ -95,7 +95,6 @@ def main():
                 space.remove(shape, shape.body)
         return space.step(dt)
 
-    quit()
     schedule(update)
 
     run()
