@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-import pyglet  # for displaying to screen
-import pymunk  # for rigid body physics
+# pylget for displaying to screen
+from pyglet import window as p_window, app as p_app, clock as p_clock
+from pymunk import Space  # for rigid body physics
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 from create_shapes import create_pentagon, create_triangle, create_segment
 from create_shapes import create_circle, create_rect
 from create_world import draw_border
 from food import create_food
-from bot import create_bot
-import numpy as np
+from bot import create_bot, move_forward, move_backward, move_right, move_left
+from numpy import random as np_random
 import cfg
 
 # set the seed for reproducability
-np.random.seed(cfg.SEED)
+np_random.seed(cfg.SEED)
 
 
 def get_pymunk_space(gravity=(0, -9.807)):
     '''returns a `space` where the physics happens'''
-    space = pymunk.Space()
+    space = Space()
     # gravity is represented by a tuple
     # 0 acceleration in x-axis and -9.807 in y-axis
     space.gravity = gravity
@@ -29,7 +30,7 @@ GH = 400
 BORDER_THICCNESS = 10
 
 # must be global because the @decorators work that way
-window = pyglet.window.Window(GW, GH, __file__, resizable=False)
+window = p_window.Window(GW, GH, __file__, resizable=False)
 space = get_pymunk_space(gravity=cfg.GRAVITY)
 options = DrawOptions()
 space.add(draw_border(GW, GH, thicc=BORDER_THICCNESS))
@@ -43,7 +44,7 @@ def run():
     '''
     run the main loop for the game engine
     '''
-    pyglet.app.run()
+    p_app.run()
 
 
 def schedule(fun):
@@ -51,7 +52,7 @@ def schedule(fun):
     given a function name
     tell pyglet to call that function every 1/60 seconds
     '''
-    pyglet.clock.schedule_interval(fun, 1.0/60)
+    p_clock.schedule_interval(fun, 1.0/60)
 
 
 @window.event
@@ -71,8 +72,8 @@ def main():
     # initialize food at random places
     for i in range(cfg.FOOD_COUNT):
         food_body, food_shape = create_food()
-        x = np.random.randint(BORDER_THICCNESS, IGW)
-        y = np.random.randint(BORDER_THICCNESS, IGH)
+        x = np_random.randint(BORDER_THICCNESS, IGW)
+        y = np_random.randint(BORDER_THICCNESS, IGH)
         food_body.position = (x, y)
         space.add(food_body, food_shape)
 
@@ -94,6 +95,7 @@ def main():
                 space.remove(shape, shape.body)
         return space.step(dt)
 
+    quit()
     schedule(update)
 
     run()
