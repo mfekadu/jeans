@@ -14,21 +14,21 @@ def move_forward(bot_body):
 
 
 def move_backward(bot_body):
-    bot_body.velocity = (0, -25)
+    bot_body.velocity = (0, -200)
 
 
 def move_right(bot_body):
-    bot_body.velocity = (250, 0)
+    bot_body.velocity = (200, 0)
 
 
 def move_left(bot_body):
-    bot_body.velocity = (-25, 0)
+    bot_body.velocity = (-200, 0)
 
 
 def move_bot(bot_body):
     # print(np_random.get_state()[1][0], "??", 42)
     print("move_bot", "cfg.ITERATOR", cfg.ITERATOR) if cfg.DEBUG >= 2 else None
-    r = MOVES[cfg.ITERATOR]
+    r = MOVES[cfg.ITERATOR % len(MOVES)]  # 0, 1, 2, 3, 4
     if r == 1:
         move_forward(bot_body)
     elif r == 2:
