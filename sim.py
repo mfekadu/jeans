@@ -36,7 +36,7 @@ def begin_collision(arbiter, space, data):
     if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
         types = [s1.body.type, s2.body.type]
         if ('bot' in types):
-            print("begin_collision", arbiter.shapes, space, data)
+            print("begin_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
     return True
 
 
@@ -46,7 +46,7 @@ def pre_collision(arbiter, space, data):
     if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
         types = [s1.body.type, s2.body.type]
         if ('bot' in types):
-            print("pre_collision", arbiter.shapes, space, data)
+            print("pre_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
     return True
 
 
@@ -57,7 +57,7 @@ def post_collision(arbiter, space, data):
         types = [s1.body.type, s2.body.type]
         if ('bot' in types):
             space.remove(s1.body, s1) if s1.body.type == 'food' else space.remove(s2.body, s2)
-            print("post_collision", arbiter.shapes, space, data)
+            print("post_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
 
 
 def separate_collision(arbiter, space, data):
@@ -66,7 +66,7 @@ def separate_collision(arbiter, space, data):
     if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
         types = [s1.body.type, s2.body.type]
         if ('bot' in types):
-            print("separate_collision", arbiter.shapes, space, data)
+            print("separate_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
 
 
 handler = space.add_default_collision_handler()
@@ -93,19 +93,39 @@ def schedule(fun):
     '''
     p_clock.schedule_interval(fun, 1.0/60)
 
+hold = False
+last_move = cfg.MOVE_STOP
+
 
 @window.event
 def on_key_press(symbol, modifiers):
+    global hold, last_move
     if symbol == key.UP:
-        move_bot(bot_body, r=1)
+        hold = True
+        move_bot(bot_body, r=cfg.MOVE_UP)
+        last_move = cfg.MOVE_UP
     elif symbol == key.DOWN:
-        move_bot(bot_body, r=2)
+        move_bot(bot_body, r=cfg.MOVE_DOWN)
+        last_move = cfg.MOVE_DOWN
+        hold = True
     elif symbol == key.RIGHT:
-        move_bot(bot_body, r=3)
+        move_bot(bot_body, r=cfg.MOVE_RIGHT)
+        last_move = cfg.MOVE_RIGHT
+        hold = True
     elif symbol == key.LEFT:
-        move_bot(bot_body, r=4)
-    else:
-        print("symbol", symbol, "modifier", modifiers)
+        move_bot(bot_body, r=cfg.MOVE_LEFT)
+        last_move = cfg.MOVE_LEFT
+        hold = True
+    # else:
+    print("PRESS", "symbol", symbol, "modifier", modifiers)
+
+
+@window.event
+def on_key_release(symbol, modifiers):
+    global hold
+    if symbol in (key.UP, key.DOWN, key.LEFT, key.RIGHT):
+        hold = False
+    print("RELEASE", "symbol", symbol, "modifier", modifiers)
 
 
 @window.event
@@ -144,6 +164,10 @@ def main():
             [print(type(shape), shape.body.position) for shape in space.shapes]
         # 4 borders + 1 bot + 100 food
         # assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
+
+        if hold:
+            move_bot(bot_body, r=last_move)
+
         for shape in space.shapes:
             x, y = shape.body.position.x, shape.body.position.y
             x_is_outside = (x < (0-10) or x > (cfg.GW+10))
