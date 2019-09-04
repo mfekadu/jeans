@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # pylget for displaying to screen
 from pyglet import window as p_window, app as p_app, clock as p_clock
+from pyglet.window import key
 from pymunk import Space  # for rigid body physics
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 from create_shapes import create_pentagon, create_triangle, create_segment
@@ -75,6 +76,9 @@ handler.post_solve = post_collision
 handler.separate = separate_collision
 
 
+bot_body, bot_shape = create_bot()
+
+
 def run():
     '''
     run the main loop for the game engine
@@ -91,13 +95,26 @@ def schedule(fun):
 
 
 @window.event
+def on_key_press(symbol, modifiers):
+    if symbol == key.UP:
+        move_bot(bot_body, r=1)
+    elif symbol == key.DOWN:
+        move_bot(bot_body, r=2)
+    elif symbol == key.RIGHT:
+        move_bot(bot_body, r=3)
+    elif symbol == key.LEFT:
+        move_bot(bot_body, r=4)
+    else:
+        print("symbol", symbol, "modifier", modifiers)
+
+
+@window.event
 def on_draw():
     '''
     stuff that happens when pyglet is drawing
     '''
     window.clear()  # start with a clean window
     space.debug_draw(options)
-
 
 
 def main():
@@ -115,7 +132,6 @@ def main():
 
     assert len(space.shapes) == cfg.FOOD_COUNT + 4  # 4 borders and 100 food
 
-    bot_body, bot_shape = create_bot()
     bot_body.position = (30, 70)
     space.add(bot_body, bot_shape)
 
@@ -134,9 +150,9 @@ def main():
             y_is_outside = (y < (0-10) or y > (cfg.GH+10))
             if (x_is_outside or y_is_outside):
                 space.remove(shape, shape.body)
-            else:
-                if hasattr(shape.body, 'type'):
-                    move_bot(shape.body) if shape.body.type == 'bot' else None
+            # else:
+                # if hasattr(shape.body, 'type'):
+                    # move_bot(shape.body) if shape.body.type == 'bot' else None
         return space.step(dt)
 
     schedule(update)

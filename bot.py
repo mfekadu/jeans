@@ -25,10 +25,10 @@ def move_left(bot_body):
     bot_body.velocity = (-200, 0)
 
 
-def move_bot(bot_body):
+def move_bot(bot_body, r=None):
+    r = MOVES[cfg.ITERATOR % len(MOVES)] if r is None else r
     # print(np_random.get_state()[1][0], "??", 42)
     print("move_bot", "cfg.ITERATOR", cfg.ITERATOR) if cfg.DEBUG >= 2 else None
-    r = MOVES[cfg.ITERATOR % len(MOVES)]  # 0, 1, 2, 3, 4
     if r == 1:
         move_forward(bot_body)
     elif r == 2:
