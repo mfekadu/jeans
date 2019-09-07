@@ -27,8 +27,8 @@ BORDER_THICCNESS = 10
 
 
 # the space within the window that food and bots can spawn
-IGW = GW - (BORDER_THICCNESS * 2)  # inner game width
-IGH = GH - (BORDER_THICCNESS * 2)  # inner game height
+IGW = GW - (BORDER_THICCNESS)  # inner game width
+IGH = GH - (BORDER_THICCNESS)  # inner game height
 
 GRAVITY = (0, 0)
 
