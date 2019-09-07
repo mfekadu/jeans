@@ -55,7 +55,7 @@ def move_bot(bot_body, r=None):
 def create_bot():
     b, s = create_circle(r=cfg.BOT_RADIUS, bt='dynamic')
     b.type = 'bot'
-    s.elasticity = 0.98
+    s.elasticity = cfg.BOT_ELASTICITY
     s.color = cfg.BOT_COLOR
     return b, s
 

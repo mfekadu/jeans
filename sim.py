@@ -91,7 +91,7 @@ def schedule(fun):
     given a function name
     tell pyglet to call that function every 1/60 seconds
     '''
-    p_clock.schedule_interval(fun, 1.0/60)
+    p_clock.schedule_interval(fun, 1.0/120)
 
 hold = False
 last_move = cfg.MOVE_STOP
