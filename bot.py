@@ -31,30 +31,21 @@ def move_0(bot_body):
 
 
 def move_forward(bot_body):
-    # _____
-    #   .  |
-    #      |
-
-    # TODO: do the magic math stuff
-    # so that it works
-    # near the edge :)
-    proposed_velocity = (0, 2000)
+    proposed_velocity = cfg.FORWARD_VELOCITY
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
 
 
 def move_backward(bot_body):
-    # bot_body.velocity = (0, -200)
-    proposed_velocity = (0, 2000)
+    proposed_velocity = cfg.BACKWARD_VELOCITY
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
 
 
 def move_right(bot_body):
-    # bot_body.velocity = (200, 0)
-    proposed_velocity = (2000, 0)
+    proposed_velocity = cfg.RIGHT_VELOCITY
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
@@ -62,7 +53,7 @@ def move_right(bot_body):
 
 def move_left(bot_body):
     # bot_body.velocity = (-200, 0)
-    proposed_velocity = (2000, 0)
+    proposed_velocity = cfg.LEFT_VELOCITY
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
