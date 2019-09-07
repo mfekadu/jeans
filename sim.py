@@ -152,8 +152,12 @@ def main():
 
     assert len(space.shapes) == cfg.FOOD_COUNT + 4  # 4 borders and 100 food
 
-    bot_body.position = (30, 70)
+    bot_body.position = (50, 100)
     space.add(bot_body, bot_shape)
+
+    # 4 borders + 1 bot + 100 food
+    assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
+    print(len(space.shapes))
 
     # do the update on 1/60th clock-ticks
     def update(dt):
@@ -162,8 +166,6 @@ def main():
         quit(cfg.EXIT_SUCCESS) if cfg.ITERATOR >= cfg.MAX_STEPS else None
         if cfg.DEBUG >= 3:
             [print(type(shape), shape.body.position) for shape in space.shapes]
-        # 4 borders + 1 bot + 100 food
-        # assert len(space.shapes) == cfg.FOOD_COUNT + 5 if cfg.DEBUG else None
 
         if hold:
             move_bot(bot_body, r=last_move)
