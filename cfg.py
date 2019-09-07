@@ -32,6 +32,8 @@ IGH = GH - (BORDER_THICCNESS * 2)  # inner game height
 
 GRAVITY = (0, 0)
 
+PY_STEP = 1.0/120 # time (seconds) since last pyglet update step
+
 
 # ******************************************************************************
 # Constants for debugging
