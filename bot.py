@@ -38,7 +38,7 @@ def move_forward(bot_body):
     # TODO: do the magic math stuff
     # so that it works
     # near the edge :)
-    proposed_velocity = (0, 200)
+    proposed_velocity = (0, 2000)
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
@@ -46,7 +46,7 @@ def move_forward(bot_body):
 
 def move_backward(bot_body):
     # bot_body.velocity = (0, -200)
-    proposed_velocity = (0, -200)
+    proposed_velocity = (0, 2000)
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
@@ -54,7 +54,7 @@ def move_backward(bot_body):
 
 def move_right(bot_body):
     # bot_body.velocity = (200, 0)
-    proposed_velocity = (200, 0)
+    proposed_velocity = (2000, 0)
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
@@ -62,13 +62,14 @@ def move_right(bot_body):
 
 def move_left(bot_body):
     # bot_body.velocity = (-200, 0)
-    proposed_velocity = (-200, 0)
+    proposed_velocity = (2000, 0)
     x = bot_body.position.x
     y = bot_body.position.y
     bot_body.velocity = safely_update_velocity(proposed_velocity, x, y)
 
 
 def move_bot(bot_body, r=None):
+    print("bot_vel", bot_body.velocity)
     r = MOVES[cfg.ITERATOR % len(MOVES)] if r is None else r
     # print(np_random.get_state()[1][0], "??", 42)
     print("move_bot", "cfg.ITERATOR", cfg.ITERATOR) if cfg.DEBUG >= 2 else None
