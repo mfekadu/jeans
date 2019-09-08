@@ -46,6 +46,8 @@ USAGE = "usage: python3 sim.py [-d [0, 1, 2]]"
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 
+DUMPS_DIR = './space_dumps'
+
 # ******************************************************************************
 # Constants for the simulation (bots, food, etc)
 # ******************************************************************************
@@ -64,9 +66,9 @@ MOVE_DOWN = 2
 MOVE_RIGHT = 3
 MOVE_LEFT = 4
 
-FORWARD_VELOCITY = (0, 2000)
-BACKWARD_VELOCITY = (0, -2000)
-RIGHT_VELOCITY = (2000, 0)
-LEFT_VELOCITY = (-2000, 0)
+FORWARD_VELOCITY = (0, 250)
+BACKWARD_VELOCITY = (0, -25)
+RIGHT_VELOCITY = (250, 0)
+LEFT_VELOCITY = (-25, 0)
 
 WALL_ELASTICITY = 0.98

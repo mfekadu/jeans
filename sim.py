@@ -12,7 +12,13 @@ from bot import create_bot, move_bot
 from rng import FOOD_X, FOOD_Y
 import cfg
 from sys import argv
+import pickle
+from os.path import join
+from os import mkdir
+from time import time, timezone
 
+SIM_NAME = 'sim' + '_' + str(time()) + '_' + str(timezone)
+mkdir(join(cfg.DUMPS_DIR, SIM_NAME))
 
 def get_pymunk_space(gravity=(0, -9.807)):
     '''returns a `space` where the physics happens'''
@@ -177,8 +183,15 @@ def main():
             if (x_is_outside or y_is_outside):
                 space.remove(shape, shape.body)
             # else:
-                # if hasattr(shape.body, 'type'):
-                    # move_bot(shape.body) if shape.body.type == 'bot' else None
+            #     if hasattr(shape.body, 'type'):
+            #         move_bot(shape.body) if shape.body.type == 'bot' else None
+
+        new_dump_filename = 'space_dump' + '_'
+        new_dump_filename += str(time()) + '_'  + str(timezone) + '_'
+        new_dump_filename += str(cfg.ITERATOR) + '_'
+        new_dump_filename += '.pickle'
+        with open( join(cfg.DUMPS_DIR, SIM_NAME, new_dump_filename), 'wb' ) as f:
+            pickle.dump(space, f)
         return space.step(dt)
 
     schedule(update)
