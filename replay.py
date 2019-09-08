@@ -1,82 +1,49 @@
 #!/usr/bin/env python3
 from pyglet import window as p_window, app as p_app, clock as p_clock
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
+from pyglet.window import key as p_key
 import cfg
-from pickle import load
-from os.path import join
-from os import listdir
+from pickle import load as pickle_load
+from os.path import join as path_join
+from os import listdir as os_listdir
 from create_world import draw_border
 
 window = p_window.Window(cfg.GW, cfg.GH, __file__, resizable=False)
 
-
-def begin_collision(arbiter, space, data):
-    s1 = arbiter.shapes[0]
-    s2 = arbiter.shapes[1]
-    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
-        types = [s1.body.type, s2.body.type]
-        if ('bot' in types):
-            print("begin_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
-    return True
+'''
+These 4 functions below are just defined to keep python happy
+    because the "space" inside the pickle dump
+    references these funcitons as if they exist in __main__
+'''
 
 
-def pre_collision(arbiter, space, data):
-    s1 = arbiter.shapes[0]
-    s2 = arbiter.shapes[1]
-    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
-        types = [s1.body.type, s2.body.type]
-        if ('bot' in types):
-            print("pre_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
-    return True
+def begin_collision(a, s, d): return True
 
 
-def post_collision(arbiter, space, data):
-    s1 = arbiter.shapes[0]
-    s2 = arbiter.shapes[1]
-    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
-        types = [s1.body.type, s2.body.type]
-        if ('bot' in types):
-            space.remove(s1.body, s1) if s1.body.type == 'food' else space.remove(s2.body, s2)
-            print("post_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
+def pre_collision(a, s, d): return True
 
 
-def separate_collision(arbiter, space, data):
-    s1 = arbiter.shapes[0]
-    s2 = arbiter.shapes[1]
-    if hasattr(s1.body, 'type') and hasattr(s2.body, 'type'):
-        types = [s1.body.type, s2.body.type]
-        if ('bot' in types):
-            print("separate_collision", arbiter.shapes, space, data) if cfg.DEBUG >= 2 else None
+def post_collision(a, s, d): return None
 
+
+def separate_collision(a, s, d): return None
 
 
 fname = 'space_dump_1567943406.325641_18000_1_.pickle'
-dumps = listdir(cfg.DUMPS_DIR)
+dumps = os_listdir(cfg.DUMPS_DIR)
 dumps.sort()
 dumps.remove('.DS_Store') if '.DS_Store' in dumps else None
 [dumps.remove(n) for n in dumps if n[-4:] == '.zip']
 
-fnames = listdir(join(cfg.DUMPS_DIR,dumps[0]))
-fnames = [join(dumps[0], fn) for fn in fnames]
+fnames = os_listdir(path_join(cfg.DUMPS_DIR, dumps[0]))
+fnames = [path_join(dumps[0], fn) for fn in fnames]
 fnames.sort()
 fnames.remove('.DS_Store') if '.DS_Store' in fnames else None
-#assert fnames[0] == fname, "{} != {}".format(fnames[0], fname)
 
-with open( join(cfg.DUMPS_DIR, fnames[0]), 'rb') as f:
-    space = load(f)
+with open(path_join(cfg.DUMPS_DIR, fnames[0]), 'rb') as f:
+    space = pickle_load(f)
 
 options = DrawOptions()
-space.add(draw_border(cfg.GW, cfg.GH, thicc=cfg.BORDER_THICCNESS))
-
-
-
-handler = space.add_default_collision_handler()
-handler.begin = begin_collision
-handler.pre_solve = pre_collision
-handler.post_solve = post_collision
-handler.separate = separate_collision
-
-
 
 
 @window.event
@@ -88,40 +55,40 @@ def on_draw():
     space.debug_draw(options)
 
 
-def run():
-    '''
-    run the main loop for the game engine
-    '''
-    p_app.run()
+@window.event
+def on_text_motion(motion):
+    if motion == p_key.MOTION_UP:
+        cfg.ITERATOR += 10
+    elif motion == p_key.MOTION_DOWN:
+        cfg.ITERATOR -= 10
+    elif motion == p_key.MOTION_RIGHT:
+        cfg.ITERATOR += 1
+    elif motion == p_key.MOTION_LEFT:
+        cfg.ITERATOR -= 1
 
 
-def schedule(fun):
-    '''
-    given a function name
-    tell pyglet to call that function every 1/60 seconds
-    '''
-    p_clock.schedule_interval(fun, cfg.PY_STEP)
+def update(dt):
+    global space
+    if cfg.ITERATOR >= len(fnames):
+        print("End of simulation.", "Goodbye!")
+        quit()
+
+    if cfg.ITERATOR <= 0:
+        cfg.ITERATOR = 0
+
+    fname = fnames[cfg.ITERATOR % len(fnames)]
+    with open(path_join(cfg.DUMPS_DIR, fname), 'rb') as f:
+        space = pickle_load(f)
+    space.step(dt)
 
 
 def main():
-    global space
     assert window
     assert space
-    print("space", space)
 
-    def update(dt):
-        global space
-        cfg.ITERATOR += 1
-        print(dt)
-        foo = space
-        with open( join(cfg.DUMPS_DIR, fnames[cfg.ITERATOR]), 'rb') as f:
-            space = load(f)
-        space.step(dt)
-
-    schedule(update)
-    run()
+    p_clock.schedule_interval(update, cfg.PY_STEP)
+    p_app.run()
 
 
 if __name__ == "__main__":
     main()
-
