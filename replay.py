@@ -29,11 +29,10 @@ def post_collision(a, s, d): return None
 def separate_collision(a, s, d): return None
 
 
-fname = 'space_dump_1567943406.325641_18000_1_.pickle'
 dumps = os_listdir(cfg.DUMPS_DIR)
 dumps.sort()
 dumps.remove('.DS_Store') if '.DS_Store' in dumps else None
-[dumps.remove(n) for n in dumps if n[-4:] == '.zip']
+dumps = [d for d in dumps if d[-3:] != 'zip']
 
 fnames = os_listdir(path_join(cfg.DUMPS_DIR, dumps[0]))
 fnames = [path_join(dumps[0], fn) for fn in fnames]
