@@ -186,12 +186,15 @@ def main():
             #     if hasattr(shape.body, 'type'):
             #         move_bot(shape.body) if shape.body.type == 'bot' else None
 
-        new_dump_filename = 'space_dump' + '_'
+        new_dump_filename = 'space_and_cfg_dump' + '_'
+        new_dump_filename += 'v' + str(cfg.VERSION) + '_'
         new_dump_filename += str(time()) + '_'  + str(timezone) + '_'
         new_dump_filename += str(cfg.ITERATOR) + '_'
         new_dump_filename += '.pickle'
+        make_var_val_tup = lambda i: (i, str(cfg.__getattribute__(i)))
+        cfg_attrs = dict(make_var_val_tup(item) for item in dir(cfg) if not item.startswith('__'))
         with open( join(cfg.DUMPS_DIR, SIM_NAME, new_dump_filename), 'wb' ) as f:
-            pickle.dump(space, f)
+            pickle.dump([space, cfg_attrs], f)
         return space.step(dt)
 
     schedule(update)

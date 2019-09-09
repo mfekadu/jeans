@@ -48,6 +48,11 @@ EXIT_FAILURE = 1
 
 DUMPS_DIR = './space_dumps'
 
+# Version of the simulation
+#     helps keep track of non-backwards-compatable changes
+#     that might affect old replay.py scripts
+VERSION = 1.0
+
 # ******************************************************************************
 # Constants for the simulation (bots, food, etc)
 # ******************************************************************************
@@ -67,8 +72,8 @@ MOVE_RIGHT = 3
 MOVE_LEFT = 4
 
 FORWARD_VELOCITY = (0, 250)
-BACKWARD_VELOCITY = (0, -25)
+BACKWARD_VELOCITY = (0, -250)
 RIGHT_VELOCITY = (250, 0)
-LEFT_VELOCITY = (-25, 0)
+LEFT_VELOCITY = (-250, 0)
 
 WALL_ELASTICITY = 0.98

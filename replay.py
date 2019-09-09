@@ -2,13 +2,11 @@
 from pyglet import window as p_window, app as p_app, clock as p_clock
 from pymunk.pyglet_util import DrawOptions  # pymunk/pyglet interaction
 from pyglet.window import key as p_key
-import cfg
 from pickle import load as pickle_load
 from os.path import join as path_join
 from os import listdir as os_listdir
-from create_world import draw_border
+import argparse
 
-window = p_window.Window(cfg.GW, cfg.GH, __file__, resizable=False)
 
 '''
 These 4 functions below are just defined to keep python happy
@@ -29,55 +27,42 @@ def post_collision(a, s, d): return None
 def separate_collision(a, s, d): return None
 
 
-dumps = os_listdir(cfg.DUMPS_DIR)
-dumps.sort()
-dumps.remove('.DS_Store') if '.DS_Store' in dumps else None
-dumps = [d for d in dumps if d[-3:] != 'zip']
-
-fnames = os_listdir(path_join(cfg.DUMPS_DIR, dumps[0]))
-fnames = [path_join(dumps[0], fn) for fn in fnames]
-fnames.sort()
-fnames.remove('.DS_Store') if '.DS_Store' in fnames else None
-
-with open(path_join(cfg.DUMPS_DIR, fnames[0]), 'rb') as f:
-    space = pickle_load(f)
-
-options = DrawOptions()
+def get_pickle_filepaths(dumps_dir):
+    fnames = os_listdir(dumps_dir)
+    fnames.remove('.DS_Store') if '.DS_Store' in fnames else None
+    fpaths = [path_join(dumps_dir, fn) for fn in fnames]
+    fpaths.sort()
+    return fpaths
 
 
-@window.event
-def on_draw():
-    '''
-    stuff that happens when pyglet is drawing
-    '''
-    window.clear()  # start with a clean window
-    space.debug_draw(options)
+# GLOBAL Variables
+space = None
+cfg = None
+window = None
+cfg_GW = 0
+cfg_GH = 0
+cfg_ITERATOR = 0
+FILEPATHS = []
 
 
-@window.event
-def on_text_motion(motion):
-    if motion == p_key.MOTION_UP:
-        cfg.ITERATOR += 10
-    elif motion == p_key.MOTION_DOWN:
-        cfg.ITERATOR -= 10
-    elif motion == p_key.MOTION_RIGHT:
-        cfg.ITERATOR += 1
-    elif motion == p_key.MOTION_LEFT:
-        cfg.ITERATOR -= 1
+def read_pickle_file_and_save_to_global_variables(filepath):
+    global space, cfg
+    with open(filepath, 'rb') as f:
+        space, cfg = pickle_load(f)
 
 
 def update(dt):
-    global space
-    if cfg.ITERATOR >= len(fnames):
+    global cfg_ITERATOR
+    if cfg_ITERATOR >= len(FILEPATHS):
         print("End of simulation.", "Goodbye!")
         quit()
 
-    if cfg.ITERATOR <= 0:
-        cfg.ITERATOR = 0
+    if cfg_ITERATOR <= 0:
+        cfg_ITERATOR = 0
 
-    fname = fnames[cfg.ITERATOR % len(fnames)]
-    with open(path_join(cfg.DUMPS_DIR, fname), 'rb') as f:
-        space = pickle_load(f)
+    fpath = FILEPATHS[cfg_ITERATOR % len(FILEPATHS)]
+    read_pickle_file_and_save_to_global_variables(fpath)
+
     space.step(dt)
 
 
@@ -85,9 +70,53 @@ def main():
     assert window
     assert space
 
-    p_clock.schedule_interval(update, cfg.PY_STEP)
+    p_clock.schedule_interval(update, float(cfg['PY_STEP']))
     p_app.run()
 
 
 if __name__ == "__main__":
+    print("\n")
+    DESC = 'replay Pickle dumps of Pymunk'
+    DUMPS_HELP = 'the directory containing the .pickle files'
+    parser = argparse.ArgumentParser(description=DESC)
+    parser.add_argument('dumps_dir', metavar='dumps_dir',
+                        type=str, nargs=1, help=DUMPS_HELP)
+    args = parser.parse_args()
+    DUMPS_DIR = args.dumps_dir[0]
+
+    FILEPATHS = get_pickle_filepaths(DUMPS_DIR)
+    read_pickle_file_and_save_to_global_variables(FILEPATHS[0])
+
+    assert space
+    assert cfg
+    assert FILEPATHS
+    assert cfg.keys
+    assert len(cfg.keys()) > 0
+
+    cfg_GW = int(cfg['GW'])
+    cfg_GH = int(cfg['GH'])
+    cfg_ITERATOR = int(cfg['ITERATOR'])
+    window = p_window.Window(cfg_GW, cfg_GH, __file__, resizable=False)
+    options = DrawOptions()
+
+    @window.event
+    def on_draw():
+        '''
+        stuff that happens when pyglet is drawing
+        '''
+        window.clear()  # start with a clean window
+        space.debug_draw(options)
+
+    @window.event
+    def on_text_motion(motion):
+        global cfg_ITERATOR
+        if motion == p_key.MOTION_UP:
+            cfg_ITERATOR += 10
+        elif motion == p_key.MOTION_DOWN:
+            cfg_ITERATOR -= 10
+        elif motion == p_key.MOTION_RIGHT:
+            cfg_ITERATOR += 1
+        elif motion == p_key.MOTION_LEFT:
+            cfg_ITERATOR -= 1
+
     main()
