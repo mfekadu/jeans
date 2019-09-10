@@ -44,15 +44,15 @@ cfg_GH = 0
 cfg_ITERATOR = 0
 FILEPATHS = []
 
+last_circle = None
+circle_objects = []
 
-def read_pickle_file_and_save_to_global_variables(filepath):
-    global space, cfg
+def read_pickle_file(filepath):
     with open(filepath, 'rb') as f:
-        space, cfg = pickle_load(f)
-
+        return pickle_load(f)
 
 def update(dt):
-    global cfg_ITERATOR
+    global space, cfg_ITERATOR
     if cfg_ITERATOR >= len(FILEPATHS):
         print("End of simulation.", "Goodbye!")
         quit()
@@ -61,9 +61,16 @@ def update(dt):
         cfg_ITERATOR = 0
 
     fpath = FILEPATHS[cfg_ITERATOR % len(FILEPATHS)]
-    read_pickle_file_and_save_to_global_variables(fpath)
+    sp, cf = read_pickle_file(fpath)
 
-    space.step(dt)
+    for s in sp.shapes:
+        if hasattr(s.body, 'type') and s.body.type == 'bot':
+            space.remove(last_circle) if last_circle is not None else None
+            sp.remove(s)
+            space.add(s)
+    del sp, cf
+
+    #space.step(dt)
 
 
 def main():
@@ -85,7 +92,20 @@ if __name__ == "__main__":
     DUMPS_DIR = args.dumps_dir[0]
 
     FILEPATHS = get_pickle_filepaths(DUMPS_DIR)
-    read_pickle_file_and_save_to_global_variables(FILEPATHS[0])
+
+    for i in range(len(FILEPATHS)):
+        print('reading_files...',i)
+        sp, cf = read_pickle_file(FILEPATHS[i])
+        for s in sp.shapes:
+            sp.remove(s)
+            circle_objects.append(s.copy()) if hasattr(s.body, 'type') and s.body.type == 'bot' else None
+        del sp, cf
+
+    space, cfg = read_pickle_file(FILEPATHS[0])
+    for c in circle_objects:
+        print('adding circle...')
+        c.unsafe_set_radius(c.radius/3)
+        space.add(c, c.body)
 
     assert space
     assert cfg
@@ -109,7 +129,7 @@ if __name__ == "__main__":
 
     @window.event
     def on_text_motion(motion):
-        global cfg_ITERATOR
+        global cfg_ITERATOR, space
         if motion == p_key.MOTION_UP:
             cfg_ITERATOR += 10
         elif motion == p_key.MOTION_DOWN:
