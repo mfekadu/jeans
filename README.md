@@ -5,10 +5,11 @@ The goal of this repository is to better understand this weird concept known as 
 
 [**Find more technical details in issue #1**][7]
 
-## Inspirational Readings
+## Inspirational Readings/Lectures
 * [Sapiens][1] by Yuval Noah Harari - particularly chapter 2
 * [The Righteous Mind][2] by Jonathan Haidt - particularly [chapter 9][3] and [this lecture][4]
 * [Up and Down the Ladder of Abstraction][6] by Bret Victor
+* Lecture #22 [Emergence and Complexity][8] by Professor Robert Sapolsky 
 
 ## Tools
 * Pymunk - physics engine
@@ -42,3 +43,4 @@ python3 sim.py
 [5]: https://en.wikipedia.org/wiki/The_Matrix
 [6]: http://worrydream.com/LadderOfAbstraction/
 [7]: https://github.com/mfekadu/jeans/issues/1
+[8]: https://youtu.be/o_ZuWbX-CyE
