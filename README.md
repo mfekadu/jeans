@@ -3,6 +3,8 @@ An exploration of [multi-level selection][0] (group selection) by simulation wit
 
 The goal of this repository is to better understand this weird concept known as "group selection" by programming an evolutionary simulation with groups that are in competition with each other and the members of each group can choose to cooperate with their groupmates or not. Hopefully, altruism will emerge, but I am also unsure of the fundamental parts of biology that I misunderstand. So that's another goal: to learn what I don't know about biology by blindly simulating a small piece of it. 
 
+[**Find more technical details in issue #1**][7]
+
 ## Inspirational Readings
 * [Sapiens][1] by Yuval Noah Harari - particularly chapter 2
 * [The Righteous Mind][2] by Jonathan Haidt - particularly [chapter 9][3] and [this lecture][4]
@@ -39,3 +41,4 @@ python3 sim.py
 [4]: https://youtu.be/NQ192d4c4S0
 [5]: https://en.wikipedia.org/wiki/The_Matrix
 [6]: http://worrydream.com/LadderOfAbstraction/
+[7]: https://github.com/mfekadu/jeans/issues/1
