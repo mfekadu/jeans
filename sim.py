@@ -143,18 +143,52 @@ def on_draw():
     space.debug_draw(options)
 
 
+def init_food(N=0, s=None, food_x=[], food_y=[]):
+    '''
+    given a food count N, a pymunk Space s, a list of x-positions,
+          and a list of y-positions.
+    mutate the space s by adding N food.
+    return True everything went okay.
+    '''
+    assert N > 0, "bad inputs - expected to initialize at least 1 food"
+    assert len(food_x) == len(food_y) == N, "bad inputs"
+    assert s, "please pass a reference to the Pymunk.Space"
+    assert type(s) == Space  # pymunk.space.Space
+
+    for i in range(N):
+        food_body, food_shape = create_food()
+        x = food_x[i]
+        y = food_y[i]
+        food_body.position = (x, y)
+        s.add(food_body, food_shape)
+
+    return True
+
+
+'''
+Advice from WesleyAC:
+Avoid global "space" object by creating some sort of local scope such that you
+  can pass in a function to mutate the space, but the space itself
+  remains... encapsulated?
+  Yeah, that sounds like I should make a wrapper class around space
+  Also, that could be function which accepts a function as an argument.
+Also, python function arguments are "pass by refernce" and not "by value"
+  https://stackoverflow.com/a/22559153/5411712
+  So, it's totally fine to make a function that takes a space and mutates it,
+  because that's how pymunk is designed to work anyway.
+'''
+
 def main():
+    '''
+    main is where all the magic happens.
+
+    '''
     # make sure window and space are a thing
     assert window
     assert space
 
     # initialize food at random places
-    for i in range(cfg.FOOD_COUNT):
-        food_body, food_shape = create_food()
-        x = FOOD_X[i]
-        y = FOOD_Y[i]
-        food_body.position = (x, y)
-        space.add(food_body, food_shape)
+    init_food(cfg.FOOD_COUNT, space, FOOD_X, FOOD_Y)
 
     assert len(space.shapes) == cfg.FOOD_COUNT + 4  # 4 borders and 100 food
 
