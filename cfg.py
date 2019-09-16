@@ -40,13 +40,13 @@ PY_STEP = 1.0/120 # time (seconds) since last pyglet update step
 # ******************************************************************************
 # DEBUG can optionally be set to:
 #    False/0 (no-debug), 1 (asserts), 2 (prints), 3 (lots of prints)
-DEBUG = True
+DEBUG = False
 
 USAGE = "usage: python3 sim.py [-d [0, 1, 2]]"
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
 
-DUMPS_DIR = './space_dumps'
+SAVES_DIR = 'saves'
 
 # Version of the simulation
 #     helps keep track of non-backwards-compatable changes
