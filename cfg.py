@@ -40,11 +40,18 @@ PY_STEP = 1.0/120 # time (seconds) since last pyglet update step
 # ******************************************************************************
 # DEBUG can optionally be set to:
 #    False/0 (no-debug), 1 (asserts), 2 (prints), 3 (lots of prints)
-DEBUG = True
+DEBUG = False
 
 USAGE = "usage: python3 sim.py [-d [0, 1, 2]]"
 EXIT_SUCCESS = 0
 EXIT_FAILURE = 1
+
+SAVES_DIR = 'saves'
+
+# Version of the simulation
+#     helps keep track of non-backwards-compatable changes
+#     that might affect old replay.py scripts
+VERSION = 1.0
 
 # ******************************************************************************
 # Constants for the simulation (bots, food, etc)
@@ -64,9 +71,9 @@ MOVE_DOWN = 2
 MOVE_RIGHT = 3
 MOVE_LEFT = 4
 
-FORWARD_VELOCITY = (0, 2000)
-BACKWARD_VELOCITY = (0, -2000)
-RIGHT_VELOCITY = (2000, 0)
-LEFT_VELOCITY = (-2000, 0)
+FORWARD_VELOCITY = (0, 250)
+BACKWARD_VELOCITY = (0, -250)
+RIGHT_VELOCITY = (250, 0)
+LEFT_VELOCITY = (-250, 0)
 
 WALL_ELASTICITY = 0.98
